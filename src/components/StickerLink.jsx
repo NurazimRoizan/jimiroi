@@ -1,17 +1,15 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 
-const StickerLink = ({ title, url, image, colorClass, initialX, initialY, rotation, containerRef }) => {
+const StickerLink = ({ title, url, image, colorClass, initialLeft, initialTop, rotation, containerRef }) => {
   const lastClickTime = useRef(0);
 
   const handleClick = (e) => {
-    // Always prevent default single-click navigation
     e.preventDefault();
 
     const currentTime = Date.now();
     const timeDifference = currentTime - lastClickTime.current;
 
-    // If clicks/taps are within 400ms of each other, it's a double tap!
     if (timeDifference < 400 && timeDifference > 0) {
       window.open(url, '_blank', 'noopener,noreferrer');
     }
@@ -29,10 +27,10 @@ const StickerLink = ({ title, url, image, colorClass, initialX, initialY, rotati
       
       drag
       dragConstraints={containerRef}
-      dragMomentum={false} // Removed momentum so it stays exactly where dropped
+      dragMomentum={false}
       dragElastic={0.2}
       
-      initial={{ x: initialX, y: initialY, rotate: rotation, opacity: 0, scale: 0 }}
+      initial={{ rotate: rotation, opacity: 0, scale: 0 }}
       animate={{ 
         rotate: rotation, 
         opacity: 1, 
@@ -53,6 +51,8 @@ const StickerLink = ({ title, url, image, colorClass, initialX, initialY, rotati
       onClick={handleClick}
       
       style={{
+        left: initialLeft,
+        top: initialTop,
         transformOrigin: "bottom right",
         touchAction: "none", 
         WebkitTouchCallout: "none",

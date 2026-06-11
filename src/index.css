@@ -124,7 +124,7 @@ body {
 /* Mobile Optimizations */
 @media (max-width: 768px) {
   .header-title {
-    font-size: 18vw;
+    font-size: 13vw;
     text-shadow: 6px 6px 0px var(--color-pink), -6px -6px 0px var(--color-cyan);
   }
   .sticker {

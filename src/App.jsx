@@ -14,24 +14,35 @@ function App() {
   }, []);
 
   const randomPosition = () => {
-    if (windowSize.width === 0) return { x: 0, y: 0 };
+    if (windowSize.width === 0) return { left: 0, top: 0 };
     
     const isMobile = windowSize.width < 768;
-    const paddingX = isMobile ? 120 : 250;
-    const paddingY = isMobile ? 120 : 250;
+    // Estimate max width/height of a sticker so it doesn't spawn off-screen
+    const stickerWidth = isMobile ? 120 : 250;
+    const stickerHeight = isMobile ? 120 : 200;
 
-    let safeWidth = Math.max(0, windowSize.width - paddingX);
-    let safeHeight = Math.max(0, windowSize.height - paddingY);
+    let safeWidth = Math.max(0, windowSize.width - stickerWidth);
+    let safeHeight = Math.max(0, windowSize.height - stickerHeight);
 
-    let x, y;
+    let left, top;
     let attempts = 0;
     do {
-      x = (Math.random() - 0.5) * safeWidth;
-      y = (Math.random() - 0.5) * safeHeight;
+      left = Math.random() * safeWidth;
+      top = Math.random() * safeHeight;
       attempts++;
-    } while (!isMobile && Math.abs(x) < 200 && Math.abs(y) < 150 && attempts < 50);
+      
+      const centerX = windowSize.width / 2;
+      const centerY = windowSize.height / 2;
+      const stickerCenterX = left + stickerWidth / 2;
+      const stickerCenterY = top + stickerHeight / 2;
+      
+      // Avoid center on desktop so title remains visible
+      const isCenter = !isMobile && Math.abs(stickerCenterX - centerX) < 200 && Math.abs(stickerCenterY - centerY) < 150;
+      
+      if (!isCenter) break;
+    } while (attempts < 50);
 
-    return { x, y };
+    return { left, top };
   };
 
   const links = [
@@ -63,8 +74,8 @@ function App() {
             url={link.url}
             image={link.image}
             colorClass={link.colorClass}
-            initialX={pos.x}
-            initialY={pos.y}
+            initialLeft={pos.left}
+            initialTop={pos.top}
             rotation={link.rotation}
             containerRef={containerRef}
           />
