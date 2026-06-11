@@ -1,79 +1,60 @@
-import React, { useRef, useState } from 'react';
-import { motion, useDragControls } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion } from 'framer-motion';
 
 const StickerLink = ({ title, url, image, colorClass, initialX, initialY, rotation, containerRef }) => {
-  const [isPeeling, setIsPeeling] = useState(false);
-  const [isPressed, setIsPressed] = useState(false);
-  const timerRef = useRef(null);
-  const dragControls = useDragControls();
+  const lastClickTime = useRef(0);
 
-  const handlePointerDown = (e) => {
-    // We only want left clicks or primary touch
-    if (e.button !== 0 && e.pointerType === 'mouse') return;
-    
-    const nativeEvent = e.nativeEvent;
-    setIsPressed(true);
+  const handleClick = (e) => {
+    // Always prevent default single-click navigation
+    e.preventDefault();
 
-    timerRef.current = setTimeout(() => {
-      setIsPeeling(true);
-      dragControls.start(nativeEvent);
-    }, 1000);
-  };
+    const currentTime = Date.now();
+    const timeDifference = currentTime - lastClickTime.current;
 
-  const handlePointerUp = () => {
-    clearTimeout(timerRef.current);
-    setIsPressed(false);
-    setIsPeeling(false);
+    // If clicks/taps are within 400ms of each other, it's a double tap!
+    if (timeDifference < 400 && timeDifference > 0) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+
+    lastClickTime.current = currentTime;
   };
 
   return (
     <motion.a
       href={url}
-      target={isPeeling ? undefined : "_blank"}
-      rel="noopener noreferrer"
       className={`sticker ${colorClass}`}
       
-      // Prevent native browser dragging of the link
       draggable={false}
-      // Prevent the context menu on long press (mobile)
       onContextMenu={(e) => e.preventDefault()}
       
       drag
-      dragControls={dragControls}
-      dragListener={false} 
       dragConstraints={containerRef}
-      dragMomentum={false} 
-      dragElastic={0} 
-      
-      onPointerDown={handlePointerDown}
-      onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerUp}
-      onPointerLeave={handlePointerUp}
+      dragMomentum={true} // Restored slight momentum for fun normal dragging
+      dragElastic={0.2}
       
       initial={{ x: initialX, y: initialY, rotate: rotation, opacity: 0, scale: 0 }}
       animate={{ 
-        rotate: isPeeling ? rotation + 10 : rotation, 
+        rotate: rotation, 
         opacity: 1, 
-        scale: isPeeling ? 1.15 : (isPressed ? 0.95 : 1),
-        zIndex: isPeeling ? 100 : 10,
-        filter: isPeeling ? `drop-shadow(15px 15px 0px rgba(0,0,0,0.5))` : `drop-shadow(0px 0px 0px rgba(0,0,0,0))`
+        scale: 1,
+        zIndex: 10,
+        filter: `drop-shadow(0px 0px 0px rgba(0,0,0,0))`
       }}
-      transition={{ 
-        type: 'spring', 
-        stiffness: isPeeling ? 300 : 200, 
-        damping: isPeeling ? 15 : 15 
+      whileHover={{ scale: 1.05, zIndex: 50 }}
+      whileTap={{ scale: 0.95, zIndex: 50 }}
+      whileDrag={{ 
+        scale: 1.15, 
+        rotate: rotation + 10,
+        zIndex: 100,
+        filter: `drop-shadow(15px 15px 0px rgba(0,0,0,0.5))`
       }}
+      transition={{ type: 'spring', stiffness: 200, damping: 15 }}
       
-      onClick={(e) => {
-        if (isPeeling) {
-          e.preventDefault();
-        }
-      }}
+      onClick={handleClick}
       
       style={{
         transformOrigin: "bottom right",
         touchAction: "none", 
-        // CSS overrides to prevent native iOS callouts and selection
         WebkitTouchCallout: "none",
         WebkitUserSelect: "none",
         userSelect: "none",
