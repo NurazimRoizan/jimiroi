@@ -29,7 +29,7 @@ const StickerLink = ({ title, url, image, colorClass, initialX, initialY, rotati
       
       drag
       dragConstraints={containerRef}
-      dragMomentum={true} // Restored slight momentum for fun normal dragging
+      dragMomentum={false} // Removed momentum so it stays exactly where dropped
       dragElastic={0.2}
       
       initial={{ x: initialX, y: initialY, rotate: rotation, opacity: 0, scale: 0 }}
