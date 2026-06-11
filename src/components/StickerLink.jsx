@@ -8,13 +8,14 @@ const StickerLink = ({ title, url, image, colorClass, initialX, initialY, rotati
   const dragControls = useDragControls();
 
   const handlePointerDown = (e) => {
-    // Store the native event to pass to dragControls later
+    // We only want left clicks or primary touch
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
+    
     const nativeEvent = e.nativeEvent;
     setIsPressed(true);
 
     timerRef.current = setTimeout(() => {
       setIsPeeling(true);
-      // Start the drag programmatically after 1s
       dragControls.start(nativeEvent);
     }, 1000);
   };
@@ -32,12 +33,17 @@ const StickerLink = ({ title, url, image, colorClass, initialX, initialY, rotati
       rel="noopener noreferrer"
       className={`sticker ${colorClass}`}
       
+      // Prevent native browser dragging of the link
+      draggable={false}
+      // Prevent the context menu on long press (mobile)
+      onContextMenu={(e) => e.preventDefault()}
+      
       drag
       dragControls={dragControls}
-      dragListener={false} // We manually trigger drag
+      dragListener={false} 
       dragConstraints={containerRef}
-      dragMomentum={false} // No sliding after release as requested
-      dragElastic={0} // Exact 1:1 following
+      dragMomentum={false} 
+      dragElastic={0} 
       
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
@@ -50,7 +56,6 @@ const StickerLink = ({ title, url, image, colorClass, initialX, initialY, rotati
         opacity: 1, 
         scale: isPeeling ? 1.15 : (isPressed ? 0.95 : 1),
         zIndex: isPeeling ? 100 : 10,
-        // When peeling, we simulate it being lifted by a drop-shadow
         filter: isPeeling ? `drop-shadow(15px 15px 0px rgba(0,0,0,0.5))` : `drop-shadow(0px 0px 0px rgba(0,0,0,0))`
       }}
       transition={{ 
@@ -60,19 +65,23 @@ const StickerLink = ({ title, url, image, colorClass, initialX, initialY, rotati
       }}
       
       onClick={(e) => {
-        // If we peeled and dragged, prevent navigation
         if (isPeeling) {
           e.preventDefault();
         }
       }}
       
       style={{
-        transformOrigin: "bottom right", // Peeling from bottom right
-        touchAction: "none" // Prevent default browser panning on mobile
+        transformOrigin: "bottom right",
+        touchAction: "none", 
+        // CSS overrides to prevent native iOS callouts and selection
+        WebkitTouchCallout: "none",
+        WebkitUserSelect: "none",
+        userSelect: "none",
+        WebkitUserDrag: "none"
       }}
     >
-      {image && <img src={image} alt={title} draggable="false" />}
-      <span>{title}</span>
+      {image && <img src={image} alt={title} draggable="false" style={{ pointerEvents: 'none' }} />}
+      <span style={{ pointerEvents: 'none' }}>{title}</span>
     </motion.a>
   );
 };
