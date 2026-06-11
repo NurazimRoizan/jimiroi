@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import StickerLink from './components/StickerLink';
 import { motion } from 'framer-motion';
 
 function App() {
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+  const containerRef = useRef(null);
 
   useEffect(() => {
     setWindowSize({ width: window.innerWidth, height: window.innerHeight });
@@ -15,14 +16,20 @@ function App() {
   const randomPosition = () => {
     if (windowSize.width === 0) return { x: 0, y: 0 };
     
-    // Position relative to the center (0,0) since framer-motion x/y are relative to the element's original position 
-    // Wait, if the element is absolute at top:0 left:0, then x/y need to be full screen.
-    // Let's assume the stickers are centered by default and we offset them.
+    const isMobile = windowSize.width < 768;
+    const paddingX = isMobile ? 120 : 250;
+    const paddingY = isMobile ? 120 : 250;
+
+    let safeWidth = Math.max(0, windowSize.width - paddingX);
+    let safeHeight = Math.max(0, windowSize.height - paddingY);
+
     let x, y;
+    let attempts = 0;
     do {
-      x = (Math.random() - 0.5) * (windowSize.width - 300);
-      y = (Math.random() - 0.5) * (windowSize.height - 300);
-    } while (Math.abs(x) < 250 && Math.abs(y) < 150);
+      x = (Math.random() - 0.5) * safeWidth;
+      y = (Math.random() - 0.5) * safeHeight;
+      attempts++;
+    } while (!isMobile && Math.abs(x) < 200 && Math.abs(y) < 150 && attempts < 50);
 
     return { x, y };
   };
@@ -36,7 +43,7 @@ function App() {
   ];
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100vw', height: '100vh', position: 'relative' }}>
+    <div ref={containerRef} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
       <motion.div 
         className="header-title"
         initial={{ opacity: 0, scale: 0.5 }}
@@ -59,6 +66,7 @@ function App() {
             initialX={pos.x}
             initialY={pos.y}
             rotation={link.rotation}
+            containerRef={containerRef}
           />
         );
       })}

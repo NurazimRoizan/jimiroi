@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 
-const StickerLink = ({ title, url, image, colorClass, initialX, initialY, rotation }) => {
+const StickerLink = ({ title, url, image, colorClass, initialX, initialY, rotation, containerRef }) => {
   const isDragging = useRef(false);
 
   return (
@@ -11,6 +11,8 @@ const StickerLink = ({ title, url, image, colorClass, initialX, initialY, rotati
       rel="noopener noreferrer"
       className={`sticker ${colorClass}`}
       drag
+      dragConstraints={containerRef}
+      dragElastic={0.2}
       dragMomentum={true}
       whileHover={{ scale: 1.1, rotate: rotation > 0 ? rotation + 5 : rotation - 5, zIndex: 50 }}
       whileTap={{ scale: 0.95, zIndex: 50 }}
