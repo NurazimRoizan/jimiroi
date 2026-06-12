@@ -119,7 +119,7 @@ function App() {
   }, [windowSize.width, windowSize.height]);
 
   return (
-    <div ref={containerRef} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
+    <div ref={containerRef} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100vw', height: '100dvh', position: 'relative', overflow: 'hidden' }}>
       <motion.div 
         className="header-title"
         initial={{ opacity: 0, scale: 0.5 }}
