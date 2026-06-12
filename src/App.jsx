@@ -27,8 +27,8 @@ function App() {
     if (windowSize.width === 0) return links.map(() => ({ left: 0, top: 0 }));
 
     const isMobile = windowSize.width < 768;
-    const stickerWidth = isMobile ? 140 : 220;
-    const stickerHeight = isMobile ? 140 : 220;
+    const stickerWidth = isMobile ? 100 : 220;
+    const stickerHeight = isMobile ? 100 : 220;
 
     const safeWidth = Math.max(0, windowSize.width - stickerWidth);
     const safeHeight = Math.max(0, windowSize.height - stickerHeight);
@@ -37,7 +37,7 @@ function App() {
     const centerY = windowSize.height / 2;
     
     // The "JIMIROI" title bounding box
-    const titleWidth = isMobile ? windowSize.width * 0.8 : 700;
+    const titleWidth = isMobile ? windowSize.width * 0.9 : 700;
     const titleHeight = isMobile ? 80 : 180;
     const titleRect = {
       left: centerX - titleWidth / 2,
@@ -66,17 +66,19 @@ function App() {
         };
 
         // 1. Avoid spawning on the JIMIROI title
+        let overlapsTitle = false;
         if (
           currentRect.left < titleRect.right &&
           currentRect.right > titleRect.left &&
           currentRect.top < titleRect.bottom &&
           currentRect.bottom > titleRect.top
         ) {
-          hasOverlap = true;
+          overlapsTitle = true;
         }
 
         // 2. Avoid overlapping with previously placed stickers
-        if (!hasOverlap) {
+        let overlapsSticker = false;
+        if (!overlapsTitle) {
           for (const pos of positions) {
             const prevRect = {
               left: pos.left,
@@ -85,21 +87,30 @@ function App() {
               bottom: pos.top + stickerHeight,
             };
 
-            const margin = 20; // Keep a 20px distance between stickers
+            const margin = 10; // 10px spacing
             if (
               currentRect.left < prevRect.right + margin &&
               currentRect.right > prevRect.left - margin &&
               currentRect.top < prevRect.bottom + margin &&
               currentRect.bottom > prevRect.top - margin
             ) {
-              hasOverlap = true;
+              overlapsSticker = true;
               break;
             }
           }
         }
 
+        hasOverlap = overlapsTitle || overlapsSticker;
+
+        // If the screen is too cramped (mobile) we might never find a perfect spot.
+        // After 300 attempts, we allow stickers to overlap EACH OTHER, 
+        // but we STILL strictly forbid them from overlapping the title!
+        if (attempts > 300) {
+          hasOverlap = overlapsTitle;
+        }
+
         attempts++;
-      } while (hasOverlap && attempts < 500); // Try 500 times per sticker to find a valid random spot
+      } while (hasOverlap && attempts < 500); 
 
       positions.push({ left, top });
     }

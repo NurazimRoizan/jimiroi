@@ -128,27 +128,30 @@ body {
     text-shadow: 6px 6px 0px var(--color-pink), -6px -6px 0px var(--color-cyan);
   }
   .sticker {
-    padding: 0.75rem 1rem;
-    font-size: 1.1rem;
-    border-width: 4px;
-    box-shadow: 6px 6px 0px var(--color-pink);
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border-width: 3px;
+    box-shadow: 4px 4px 0px var(--color-pink);
+    gap: 0.25rem;
   }
-  .sticker.cyan { box-shadow: 6px 6px 0px var(--color-cyan); }
-  .sticker.yellow { box-shadow: 6px 6px 0px var(--color-yellow); }
-  .sticker.black { box-shadow: 6px 6px 0px var(--color-black); }
+  .sticker.cyan { box-shadow: 4px 4px 0px var(--color-cyan); }
+  .sticker.yellow { box-shadow: 4px 4px 0px var(--color-yellow); }
+  .sticker.black { box-shadow: 4px 4px 0px var(--color-black); }
   
-  .sticker:hover { box-shadow: 8px 8px 0px var(--color-pink); }
-  .sticker.cyan:hover { box-shadow: 8px 8px 0px var(--color-cyan); }
-  .sticker.yellow:hover { box-shadow: 8px 8px 0px var(--color-yellow); }
+  .sticker:hover { box-shadow: 6px 6px 0px var(--color-pink); }
+  .sticker.cyan:hover { box-shadow: 6px 6px 0px var(--color-cyan); }
+  .sticker.yellow:hover { box-shadow: 6px 6px 0px var(--color-yellow); }
 
   .sticker img {
-    width: 65px;
-    height: 65px;
+    width: 50px;
+    height: 50px;
     border-width: 3px;
   }
   .instruction {
-    font-size: 1rem;
+    font-size: 0.9rem;
     bottom: 1rem;
     border-width: 3px;
+    white-space: normal;
+    max-width: 90vw;
   }
 }
