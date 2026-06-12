@@ -3,13 +3,14 @@ import StickerLink from './components/StickerLink';
 import { motion } from 'framer-motion';
 
 const links = [
-  { id: 1, title: 'Portfolio', url: 'https://nurazimroizan.github.io/', image: '/cat.png', colorClass: 'cyan', rotation: -12 },
+  { id: 1, title: 'Portfolio', url: 'https://portfolio.jimiroi.com', image: '/cat.png', colorClass: 'cyan', rotation: -12 },
   { id: 2, title: 'PiYak', url: 'https://piyak.jimiroi.com', image: '/piyak.png', colorClass: '', rotation: 15 },
   { id: 3, title: 'GeeyBoard', url: 'https://github.com/NurazimRoizan/GeeyBoard', image: '/smiley.png', colorClass: 'yellow', rotation: -5 },
   { id: 4, title: 'The Bench', url: 'https://thebench.vercel.app/', image: null, colorClass: 'black', rotation: 8 },
   { id: 5, title: 'Mata', url: 'https://nurazimroizan.github.io/Mata/', image: null, colorClass: 'cyan', rotation: -20 },
   { id: 6, title: 'LinkedIn', url: 'https://www.linkedin.com/in/nurazimroy', image: null, colorClass: '', rotation: 12 },
   { id: 7, title: 'GitHub', url: 'https://github.com/NurazimRoizan', image: null, colorClass: 'black', rotation: -8 },
+  { id: 8, title: 'not-my-portfolio', url: 'https://404.jimiroi.com', image: null, colorClass: 'yellow', rotation: 25 },
 ];
 
 function App() {
