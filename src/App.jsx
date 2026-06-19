@@ -34,7 +34,7 @@ function App() {
       { x: 8, y: 10 },   // Portfolio
       { x: 75, y: 8 },   // PiYak
       { x: 5, y: 45 },   // GeeyBoard
-      { x: 78, y: 48 },  // The Bench
+      { x: 82, y: 38 },  // The Bench (pushed further right and up to avoid title)
       { x: 12, y: 75 },  // Mata
       { x: 72, y: 78 },  // LinkedIn
       { x: 32, y: 12 },  // GitHub
