@@ -28,95 +28,50 @@ function App() {
     if (windowSize.width === 0) return links.map(() => ({ left: 0, top: 0 }));
 
     const isMobile = windowSize.width < 768;
-    const stickerWidth = isMobile ? 100 : 220;
-    const stickerHeight = isMobile ? 100 : 220;
 
-    const safeWidth = Math.max(0, windowSize.width - stickerWidth);
-    const safeHeight = Math.max(0, windowSize.height - stickerHeight);
-    
-    const centerX = windowSize.width / 2;
-    const centerY = windowSize.height / 2;
-    
-    // The "JIMIROI" title bounding box
-    const titleWidth = isMobile ? windowSize.width * 0.9 : 700;
-    const titleHeight = isMobile ? 80 : 180;
-    const titleRect = {
-      left: centerX - titleWidth / 2,
-      right: centerX + titleWidth / 2,
-      top: centerY - titleHeight / 2,
-      bottom: centerY + titleHeight / 2,
-    };
+    // Define "controlled chaos" percentages for desktop (x: vw, y: vh)
+    const desktopCoords = [
+      { x: 8, y: 10 },   // Portfolio
+      { x: 75, y: 8 },   // PiYak
+      { x: 5, y: 45 },   // GeeyBoard
+      { x: 78, y: 48 },  // The Bench
+      { x: 12, y: 75 },  // Mata
+      { x: 72, y: 78 },  // LinkedIn
+      { x: 32, y: 12 },  // GitHub
+      { x: 45, y: 80 },  // not-my-portfolio
+    ];
 
-    const positions = [];
+    // Define "controlled chaos" percentages for mobile (x: vw, y: vh)
+    // Mobile layout dodges the center (y roughly 40-60 is avoided)
+    const mobileCoords = [
+      { x: 5, y: 5 },    // Portfolio
+      { x: 55, y: 8 },   // PiYak
+      { x: 15, y: 22 },  // GeeyBoard
+      { x: 60, y: 28 },  // The Bench
+      { x: 5, y: 65 },   // Mata
+      { x: 55, y: 62 },  // LinkedIn
+      { x: 18, y: 82 },  // GitHub
+      { x: 50, y: 85 },  // not-my-portfolio
+    ];
 
-    for (let i = 0; i < links.length; i++) {
-      let left, top;
-      let attempts = 0;
-      let hasOverlap = false;
+    const coords = isMobile ? mobileCoords : desktopCoords;
 
-      do {
-        left = Math.random() * safeWidth;
-        top = Math.random() * safeHeight;
-        hasOverlap = false;
-
-        const currentRect = {
-          left: left,
-          right: left + stickerWidth,
-          top: top,
-          bottom: top + stickerHeight,
+    return links.map((link, index) => {
+      // Fallback in case we add more links than predefined coords
+      if (index >= coords.length) {
+        return { 
+          left: Math.random() * (windowSize.width * 0.8), 
+          top: Math.random() * (windowSize.height * 0.8) 
         };
-
-        // 1. Avoid spawning on the JIMIROI title
-        let overlapsTitle = false;
-        if (
-          currentRect.left < titleRect.right &&
-          currentRect.right > titleRect.left &&
-          currentRect.top < titleRect.bottom &&
-          currentRect.bottom > titleRect.top
-        ) {
-          overlapsTitle = true;
-        }
-
-        // 2. Avoid overlapping with previously placed stickers
-        let overlapsSticker = false;
-        if (!overlapsTitle) {
-          for (const pos of positions) {
-            const prevRect = {
-              left: pos.left,
-              right: pos.left + stickerWidth,
-              top: pos.top,
-              bottom: pos.top + stickerHeight,
-            };
-
-            const margin = 10; // 10px spacing
-            if (
-              currentRect.left < prevRect.right + margin &&
-              currentRect.right > prevRect.left - margin &&
-              currentRect.top < prevRect.bottom + margin &&
-              currentRect.bottom > prevRect.top - margin
-            ) {
-              overlapsSticker = true;
-              break;
-            }
-          }
-        }
-
-        hasOverlap = overlapsTitle || overlapsSticker;
-
-        // If the screen is too cramped (mobile) we might never find a perfect spot.
-        // After 300 attempts, we allow stickers to overlap EACH OTHER, 
-        // but we STILL strictly forbid them from overlapping the title!
-        if (attempts > 300) {
-          hasOverlap = overlapsTitle;
-        }
-
-        attempts++;
-      } while (hasOverlap && attempts < 500); 
-
-      positions.push({ left, top });
-    }
-
-    return positions;
+      }
+      
+      const c = coords[index];
+      // Convert vw/vh percentages to absolute pixels for Framer Motion constraints to work
+      return {
+        left: (c.x / 100) * windowSize.width,
+        top: (c.y / 100) * windowSize.height
+      };
+    });
   }, [windowSize.width, windowSize.height]);
 
   return (
