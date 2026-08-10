@@ -87,7 +87,7 @@ function App() {
       >
         JIMIROI
       </motion.div>
-      <div className="instruction">YEET THE STICKERS!</div>
+      <div className="instruction">DRAG 'EM. DOUBLE TAP TO OPEN.</div>
       
       {windowSize.width > 0 && links.map((link, index) => {
         const pos = stickerPositions[index];
