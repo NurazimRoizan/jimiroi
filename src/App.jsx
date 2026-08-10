@@ -11,6 +11,7 @@ const links = [
   { id: 6, title: 'LinkedIn', url: 'https://www.linkedin.com/in/nurazimroy', image: null, colorClass: '', rotation: 12 },
   { id: 7, title: 'GitHub', url: 'https://github.com/NurazimRoizan', image: null, colorClass: 'black', rotation: -8 },
   { id: 8, title: 'not-my-portfolio', url: 'https://404.jimiroi.com', image: null, colorClass: 'yellow', rotation: 25 },
+  { id: 9, title: 'Wallo', url: 'https://wallo.jimiroi.com', image: '/wallo.png', colorClass: 'cyan', rotation: -15 },
 ];
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
       { x: 72, y: 78 },  // LinkedIn
       { x: 32, y: 12 },  // GitHub
       { x: 45, y: 80 },  // not-my-portfolio
+      { x: 40, y: 25 },  // Wallo
     ];
 
     // Define "controlled chaos" percentages for mobile (x: vw, y: vh)
@@ -52,6 +54,7 @@ function App() {
       { x: 55, y: 62 },  // LinkedIn
       { x: 18, y: 82 },  // GitHub
       { x: 50, y: 85 },  // not-my-portfolio
+      { x: 35, y: 15 },  // Wallo
     ];
 
     const coords = isMobile ? mobileCoords : desktopCoords;
