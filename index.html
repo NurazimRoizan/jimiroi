@@ -24,7 +24,45 @@
     <meta property="twitter:image" content="https://jimiroi.com/piyak.png" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Semantic crawlable index for search engines before React mounts -->
+      <header style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
+        <h1>JIMIROI | Projects by Nurazim Roizan</h1>
+        <p>The unhinged, chaotic root hub of Nurazim Roizan's personal projects and creative sandbox.</p>
+        <nav aria-label="Featured Projects">
+          <ul>
+            <li>
+              <a href="https://piyak.jimiroi.com">
+                PiYak — Gamified Poop &amp; Period Tracker for Couples
+              </a>
+            </li>
+            <li><a href="https://portfolio.jimiroi.com">Portfolio</a></li>
+            <li><a href="https://wallo.jimiroi.com">Wallo</a></li>
+            <li><a href="https://thebench.vercel.app/">The Bench</a></li>
+            <li><a href="https://github.com/NurazimRoizan/GeeyBoard">GeeyBoard</a></li>
+            <li><a href="https://nurazimroizan.github.io/Mata/">Mata</a></li>
+            <li><a href="https://github.com/NurazimRoizan">GitHub Profile</a></li>
+            <li><a href="https://www.linkedin.com/in/nurazimroy">LinkedIn</a></li>
+          </ul>
+        </nav>
+      </header>
+    </div>
+
+    <noscript>
+      <div style="padding: 2rem; color: #fff; background: #111; font-family: sans-serif;">
+        <h1>JIMIROI | Projects by Nurazim Roizan</h1>
+        <p>The unhinged, chaotic root hub of Nurazim Roizan's personal projects and creative sandbox.</p>
+        <h2>Featured Projects</h2>
+        <ul>
+          <li><a href="https://piyak.jimiroi.com" style="color: #00ffff;">PiYak — Gamified Poop &amp; Period Tracker for Couples</a></li>
+          <li><a href="https://portfolio.jimiroi.com" style="color: #00ffff;">Portfolio</a></li>
+          <li><a href="https://wallo.jimiroi.com" style="color: #00ffff;">Wallo</a></li>
+          <li><a href="https://thebench.vercel.app/" style="color: #00ffff;">The Bench</a></li>
+          <li><a href="https://github.com/NurazimRoizan/GeeyBoard" style="color: #00ffff;">GeeyBoard</a></li>
+        </ul>
+      </div>
+    </noscript>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
